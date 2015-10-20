@@ -9,12 +9,18 @@ public class Brick : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		// get the renderer component, we'll use this to 
+		// modify the materials later
 		renderer = gameObject.GetComponent<Renderer>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		// the brick color is dependent on the number of hits left
+		// in the numHits counter. we use a simple switch case to
+		// go through the colors. You could use a formula for this
+		// as well, but i chose to explicitly define which colors 
+		// correlate to the points left
 		switch(numHits){
 			case 1:  renderer.material.color = Color.red;    break;
 			case 2:  renderer.material.color = Color.yellow; break;
@@ -27,10 +33,17 @@ public class Brick : MonoBehaviour {
 	void GetHit(int damage){
 		int score = 0;
 		// prevent adding points for overkill
-		if(damage > numHits)
+
+		if(damage > numHits){
+			// damage would be greater than the points left on the 
+			// block, so we assign the hits left as the score
 			score = numHits;
-		else
+		}
+		else{
+			// brick has more hits left than damage being dealt, so
+			// we assign the damage dealt to the score
 			score = damage;
+		}
 
 		// subtract points
 		numHits -= damage;

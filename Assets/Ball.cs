@@ -11,16 +11,19 @@ public class Ball : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		// get the rigidbody for use later in the code
 		body = GetComponent<Rigidbody>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		// call the serve method when user presses Jump button (mapped to space by default)
 		if(Input.GetAxis("Jump") > 0){
 			Serve();
 		}
 	}
-	
+
+	// Fixed update is called at a fixed rate
 	void FixedUpdate(){
 		if(isInPlay){
 			// a constant force is applied while ball is in motion
@@ -50,20 +53,28 @@ public class Ball : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision){
+		// here we're using tags to figure out if we've hit the killbox
 		if(collision.gameObject.tag == "Killbox"){
+			// this is a weird bit, but we're sending a message to the parent of this 
+			// game object (scene), which will call any methods called "BallShouldDie"
 			transform.parent.gameObject.BroadcastMessage("BallShouldDie");
 		}
 	}
 
 	public void Reset(){
+		// simply reset everything to the initial state
 		body.velocity = Vector3.zero;
 		body.position = Vector3.zero;
 		isInPlay = false;
 	}
 
 	public void Serve(){
+		// check if the ball is in play
 		if(!isInPlay){
+			// set the ball into motion
 			body.velocity = new Vector3(0, -maxSpeed, 0);
+
+			// make sure this can't get called again until the ball is out of play
 			isInPlay = true;
 		}
 	}

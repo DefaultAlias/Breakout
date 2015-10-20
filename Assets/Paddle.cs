@@ -24,6 +24,7 @@ public class Paddle : MonoBehaviour {
 		}
 	}
 
+	// Fixed update is called at a fixed rate
 	void FixedUpdate () {
 		// respond to user input and move the paddle
 		float move = Input.GetAxis("Horizontal");
